@@ -15,7 +15,7 @@ The left column of signals in Figure 3 are the inputs and outputs of the system.
 the clock inputs and connect the Audio CODEC and Audio/Video Configuration modules to the
 corresponding peripheral devices on the DE1-SoC board. The right column of signals connects the Audio CODEC Interface module to your circuit and allows your circuit to record sounds from a microphone and
 play them back via speakers.
-![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/Screenshot%202024-03-04%20203046.png)
+![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/BLOCK_DIAGRAM/Screenshot1.png)
 
 ## About Audio Interface
 
@@ -39,14 +39,28 @@ write a sample to the writedata_left and writedata_right inputs and assert the w
 signal. This operation stores a sample in a buffer inside of the Audio CODEC Interface, which will
 then send the sample to the speakers at the right time.
 
-![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/Screenshot%202024-03-04%20203056.png)
+![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/BLOCK_DIAGRAM/Screenshot2.png)
 
 ## About FIR Filter
 This circuit first divides the input sample by 𝑁 . Then, the
 resulting value is stored in a First-In First-Out (FIFO) buffer of length 𝑁 and added to the accumulator.
 To make sure the value in the accumulator is the average of the last 𝑁 samples, the circuit subtracts the
 value that comes out of the FIFO, which represents the (𝑁 + 1)th sample.
-![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/Screenshot%202024-03-04%20203104.png)
+![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/BLOCK_DIAGRAM/Screenshot3.png)
+
+## Interpretation of Results
+From i/p to o/p the filter has a propogation delay time of 300 ps. 
+
+Parameters &#x2B50;please see FIR_Running_Mean_Filter.sv for testbench sv&#x2B50;
+- buffer: register holding N number of data inputs
+- mean: sum of values in buffer
+- dataOut: mean / N
+- push: new value should enter the buffer
+- spit: N+1 value coming out of buffer when full
+- find_mean: preliminary action to sum register before sent to dataOut
+
+![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/MODELSIM/waves.png)
+![](https://github.com/justinsim02/Running-Mean-FIR-Filter/blob/main/MODELSIM/terminal.png)
 
 ## References
 This lab is adopted from Intel's University Program
